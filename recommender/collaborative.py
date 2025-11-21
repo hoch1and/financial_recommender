@@ -14,7 +14,7 @@ class CollaborativeRecommender:
         self.model = LightFM(loss="warp")
         self.model.fit(self.interactions, epochs=epochs, num_threads=2)
 
-    def recommend(self, user_id, n_items, top_n=5):
+    def recommend(self, user_id, n_items, top_n=20):
         scores = self.model.predict(user_id, list(range(n_items)))
         top_items = sorted(range(len(scores)), key=lambda i: -scores[i])[:top_n]
         return top_items

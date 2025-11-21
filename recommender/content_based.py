@@ -9,7 +9,7 @@ class ContentRecommender:
         sim_matrix = cosine_similarity(features.drop(columns=["product_id"]))
         return pd.DataFrame(sim_matrix, index=features["product_id"], columns=features["product_id"])
 
-    def recommend(self, product_id, top_n=5):
+    def recommend(self, product_id, top_n=20):
         if product_id not in self.sim_df.columns:
             return []
         sim_scores = self.sim_df[product_id].sort_values(ascending=False)

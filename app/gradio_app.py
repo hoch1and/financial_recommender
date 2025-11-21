@@ -30,7 +30,7 @@ else:
     users, products, ratings = generate_synthetic_data()
     logger.info(f"Сгенерировано {len(users)} пользователей, {len(products)} продуктов, {len(ratings)} взаимодействий")
 
-logger.info("🧹 Предобработка данных (нормализация, one-hot)...")
+logger.info("Предобработка данных (нормализация, one-hot)...")
 prod_features = preprocess_products(products)
 logger.info("Предобработка завершена")
 
@@ -51,7 +51,9 @@ def recommend_interface(user_id):
     logger.info(f"Запрос рекомендаций для пользователя ID={user_id}")
 
     recs_collab = collab_model.recommend(user_id, n_items=len(products))
+    recs_content_based = content_model.recommend(user_id)
     recs_hybrid = hybrid.recommend(user_id, n_items=len(products))
+    logger.info(f"Content-based рекомендации: {recs_content_based[:20]}")
     logger.info(f"Collaborative рекомендации: {recs_collab[:20]}")
     logger.info(f"Hybrid рекомендации: {recs_hybrid[:20]}")
 
@@ -65,9 +67,9 @@ demo = gr.Interface(
     inputs=gr.Number(label="User ID"),
     outputs=gr.Dataframe(label="Рекомендованные продукты"),
     title="Гибридная рекомендательная система для финсервиса",
-    description="Введите ID пользователя (0–999), чтобы получить персональные рекомендации."
+    description="Введите ID пользователя (1–999), чтобы получить персональные рекомендации."
 )
 
 if __name__ == "__main__":
-    logger.info("🚦 Запуск Gradio интерфейса...")
+    logger.info("Запуск Gradio интерфейса...")
     demo.launch()

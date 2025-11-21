@@ -5,7 +5,7 @@ class HybridRecommender:
         self.collab_model = collab_model
         self.content_model = content_model
 
-    def recommend(self, user_id, n_items, alpha=0.6, top_n=10):
+    def recommend(self, user_id, n_items, alpha=0.6, top_n=20):
         collab_items = self.collab_model.recommend(user_id, n_items, top_n*2)
         if not collab_items:
             return []
